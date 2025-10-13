@@ -4,6 +4,7 @@ services:
   crypto_api:
     build: .
     container_name: crypto_api
+    # command: /bin/sh -c "tail -f /dev/null"
     volumes:
       - .:/app
     working_dir: /app
