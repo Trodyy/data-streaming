@@ -1,14 +1,9 @@
 version: '3.9'
 
 services:
-  app:
+  crypto_api:
     build: .
-    container_name: python_app
-    command: python main.py
+    container_name: crypto_api
     volumes:
       - .:/app
     working_dir: /app
-    ports:
-      - "8000:8000"
-    environment:
-      - PYTHONUNBUFFERED=1
