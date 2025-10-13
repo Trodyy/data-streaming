@@ -1,10 +1,10 @@
-FROM python:3
+FROM python:3.12-slim
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt || true
 
-COPY . .
+COPY . .  
 
-CMD [ "python", "./api/get-data.py" ]
+CMD ["python", "api/get-data.py"]
