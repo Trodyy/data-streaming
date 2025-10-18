@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt || true
 
 COPY . .  
 
-CMD ["python", "api/get-data.py"]
+CMD ["python", "api/crypto_api.py"]
