@@ -13,7 +13,7 @@ class CryptoAPI:
         while 1 :
             response = requests.get(self.url , headers=self.headers)
             print(response.json())
-            time.sleep(5)
+            time.sleep(12)
 
 
 
