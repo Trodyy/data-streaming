@@ -1,7 +1,6 @@
 import requests
 import os
 import time
-
 class CryptoAPI:
     def __init__(self):
         self.url = "https://api.freecryptoapi.com/v1/getData?symbol=BTC"
