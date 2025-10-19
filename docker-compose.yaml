@@ -1,9 +1,9 @@
 version: '3.9'
 
 services:
-  crypto_api:
+  python:
     build: .
-    container_name: crypto_api
+    container_name: python
     volumes:
       - ./api/crypto_api.py:/app/api/crypto_api.py
       - ./kafka/producer.py:/app/kafka/producer.py
