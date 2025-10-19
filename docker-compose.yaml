@@ -5,8 +5,8 @@ services:
     build: .
     container_name: crypto_api
     volumes:
-      - ./api/crypto_api.py:/app/crypto_api.py
-      - ./kafka/producer.py:/app/producer.py
+      - ./api/crypto_api.py:/app/api/crypto_api.py
+      - ./kafka/producer.py:/app/kafka/producer.py
     working_dir: /app
     entrypoint: /bin/sh -c "tail -f /dev/null"
 
