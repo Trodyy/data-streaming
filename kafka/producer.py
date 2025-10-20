@@ -26,7 +26,7 @@ value = json.dumps(real_data).encode('utf-8')
 producer.produce(
     topic='crypto_topic',
     value=value ,
-    callback=lambda err, msg: print(f"Delivered message to {msg.topic()} [{msg.partition()}]") if not err else print(f"Failed to deliver message: {err}")
+    callback=delivery_report
 )
 
 producer.flush()
