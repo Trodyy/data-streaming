@@ -10,35 +10,50 @@ services:
     working_dir: /app
     entrypoint: /bin/sh -c "tail -f /dev/null"
 
+  
+  redpanda:
+    image: redpandadata/redpanda:v25.2.10
 
-
-
-
-  kafka:
-    image: confluentinc/cp-kafka:7.8.3
-    container_name: kafka
+    container_name: redpanda-0
+    command:
+      - redpanda start
+      - --smp 1  # simultaneous multiprocessing
+      - --overprovisioned
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092   #its for brokers to communicate
+      - --advertise-kafka-addr internal://redpanda-0:9092,external://localhost:19092
+      - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
+      - --advertise-pandaproxy-addr internal://redpanda-0:8082,external://localhost:18082
+      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
     ports:
-      - "9092:9092"
+      - 18081:18081
+      - 18082:18082
+      - 19092:19092
 
+  
+  redpanda-console:
+    image: redpandadata/console:v3.2.2
+    container_name: redpanda-console
+    entrypoint: /bin/sh
+    command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     environment:
-      KAFKA_KRAFT_MODE: 'true'
+      CONFIG_FILEPATH: /tmp/config.yml
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["redpanda-0:9092"]
+        schemaRegistry:
+          enabled: true
+          urls: ["http://redpanda-0:8081"]
+        redpanda:
+          adminApi:
+            enabled: true
+            urls: ["http://redpanda-0:9644"]
+    ports:
+      - 8080:8080
+    depends_on:
+      - redpanda
 
-      CLUSTER_ID: 'my-kafka-cluster-001'
-      KAFKA_NODE_ID: 1
 
-      KAFKA_PROCESS_ROLES: broker,controller
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
 
-      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
 
-    volumes:
-      - kafka_kraft:/var/lib/kafka/data
-
-volumes:
-  kafka_kraft:
 
