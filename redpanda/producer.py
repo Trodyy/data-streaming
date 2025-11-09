@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from confluent_kafka import Producer
 from api.crypto_api import CryptoAPI
 import json
@@ -30,3 +31,6 @@ producer.produce(
 )
 
 producer.flush()
+=======
+#Hello world.
+>>>>>>> main
